@@ -1,0 +1,35 @@
+#!/bin/bash
+
+dir=`pwd`
+depth=''
+
+while getopts 'sd:' arg; do
+  case "$arg" in
+    s )
+      depth='-maxdepth 1'
+      ;;
+
+    d )
+      dir="${OPTARG}"
+      ;;
+  esac
+done
+
+shift $((OPTIND-1))
+
+dimension=$(( $1 ))
+
+if [ $dimension -eq 0 ]; then
+  echo 'usage: images.by-dimension [OPTIONS] DIMENSION' >&2
+  exit 1
+fi
+
+find "$dir" $depth -type f | while read path; do
+  if [[ `file --brief --mime-type "$path"` =~ ^image/ ]]; then
+    dimensions=( `convert "$path" -print '%w %h' /dev/null` )
+
+    if [ $(( ${dimensions[0]} )) -ge $dimension ] || [ $(( ${dimensions[1]} )) -ge $dimension ]; then
+      readlink -f "$path"
+    fi
+  fi
+done
