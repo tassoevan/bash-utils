@@ -1,0 +1,11 @@
+#!/bin/bash
+
+fn=$*
+
+fn_() (
+  eval $fn
+)
+
+while read line; do
+  fn_ "$line"
+done

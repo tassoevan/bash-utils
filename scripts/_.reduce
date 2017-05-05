@@ -1,0 +1,14 @@
+#!/bin/bash
+
+fn=$*
+
+fn_() (
+  eval $fn
+)
+
+buffer=''
+while read line; do
+  buffer=`fn_ "$buffer" "$line"`
+done
+
+echo "$buffer"
