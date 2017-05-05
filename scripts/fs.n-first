@@ -1,0 +1,11 @@
+#!/bin/bash
+
+count="$1"
+shift
+dir="$1"
+
+if [ -z "$dir" ]; then
+  dir=`pwd`
+fi
+
+find "$dir" -maxdepth 1 -type f | sort | head -"$count"

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ -t 0 ]; then
+  cp "$@"
+else
+  cat - | while read path
+  do
+    cp "$path" "$@"
+  done
+fi

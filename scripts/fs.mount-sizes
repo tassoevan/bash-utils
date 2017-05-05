@@ -1,0 +1,3 @@
+#!/bin/bash
+
+df "$@" --human-readable --print-type --exclude-type=tmpfs --exclude-type=devtmpfs
