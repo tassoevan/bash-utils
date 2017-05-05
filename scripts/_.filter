@@ -1,0 +1,13 @@
+#!/bin/bash
+
+fn=$*
+
+fn_() (
+  eval $fn
+)
+
+while read line; do
+  if fn_ "$line"; then
+    echo "$line"
+  fi
+done
