@@ -1,0 +1,28 @@
+#!/bin/bash
+
+ext=''
+while getopts 'e:' arg; do
+  case "$arg" in
+    e )
+      ext="${OPTARG}"
+      ;;
+  esac
+done
+
+shift $((OPTIND-1))
+
+src="$1"
+dst="$2"
+
+if [ -z "$dst" ]; then
+  dir=`dirname "$src"`
+  base=`basename "$src"`
+
+  if [ -z "$ext" ]; then
+    dst="$dir/${base%.*}.copy.${base##*.}"
+  else
+    dst="$dir/${base%.*}.$ext"
+  fi
+fi
+
+ffmpeg -i "$src" "$dst"
