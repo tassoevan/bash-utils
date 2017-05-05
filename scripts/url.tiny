@@ -1,0 +1,4 @@
+#!/bin/bash
+
+encoded=`python -c 'import urllib;print urllib.quote(raw_input())' <<< "$1"`
+wget -qO - "http://tinyurl.com/api-create.php?url=$encoded"
