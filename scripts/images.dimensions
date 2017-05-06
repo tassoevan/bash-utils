@@ -1,3 +1,14 @@
 #!/bin/bash
 
-convert "$1" -print '%w %h' /dev/null
+main() {
+  convert "$1" -print '%w %h' /dev/null
+}
+
+if [ -t 0 ]; then
+  main "$@"
+else
+  cat - | while read path
+  do
+    main "$path"
+  done
+fi

@@ -1,3 +1,14 @@
 #!/bin/bash
 
-echo "$*" | sed -e 's/[^A-Za-z0-9._-]/_/g'
+main() {
+  echo "$1" | sed -e 's/[^A-Za-z0-9._-]/_/g'
+}
+
+if [ -t 0 ]; then
+  main "$@"
+else
+  cat - | while read filename
+  do
+    main "$filename"
+  done
+fi

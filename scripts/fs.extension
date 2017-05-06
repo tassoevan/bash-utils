@@ -1,3 +1,14 @@
 #!/bin/bash
 
-echo "${1##*.}"
+main() {
+  echo "${1##*.}"
+}
+
+if [ -t 0 ]; then
+  main "$@"
+else
+  cat - | while read path
+  do
+    main "$path"
+  done
+fi

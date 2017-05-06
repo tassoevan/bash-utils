@@ -1,3 +1,14 @@
 #!/bin/bash
 
-python -c 'import urllib;print urllib.quote(raw_input())' <<< "$1"
+main() {
+  python -c 'import urllib;print urllib.quote(raw_input())' <<< "$1"
+}
+
+if [ -t 0 ]; then
+  main "$@"
+else
+  cat - | while read url
+  do
+    main "$url"
+  done
+fi

@@ -1,7 +1,18 @@
 #!/bin/bash
 
-if !( file --mime-type --brief "$1" | grep "audio\|video" > /dev/null ); then
-  exit 1
-fi
+main() {
+  if !( file --mime-type --brief "$1" | grep "audio\|video" > /dev/null ); then
+    exit 1
+  fi
 
-avprobe -loglevel error -show_streams "$1" | grep duration= | cut -f2 -d= | sort --reverse | head -n1
+  avprobe -loglevel error -show_streams "$1" | grep duration= | cut -f2 -d= | sort --reverse | head -n1
+}
+
+if [ -t 0 ]; then
+  main "$@"
+else
+  cat - | while read path
+  do
+    main "$path"
+  done
+fi

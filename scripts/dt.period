@@ -1,15 +1,15 @@
 #!/bin/bash
 
-echo_period() {
+main() {
   days=`echo "($1 / (24 * 60 * 60) + 0.5)/1" | bc`
   echo "${days}d `date -d@"$1" -u '+%Hh %Mmin %Ss'`"
 }
 
 if [ -t 0 ]; then
-  echo_period "$@"
+  main "$@"
 else
   cat - | while read secs
   do
-    echo_period "$secs"
+    main "$secs"
   done
 fi

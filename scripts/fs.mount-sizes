@@ -1,3 +1,14 @@
 #!/bin/bash
 
-df "$@" --human-readable --print-type --exclude-type=tmpfs --exclude-type=devtmpfs
+main() {
+  df "$1" --human-readable --print-type --exclude-type=tmpfs --exclude-type=devtmpfs
+}
+
+if [ -t 0 ]; then
+  main "$@"
+else
+  cat - | while read url
+  do
+    main "$url"
+  done
+fi
