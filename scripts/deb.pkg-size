@@ -1,0 +1,18 @@
+#!/bin/bash
+
+main() {
+  if [[ "$#" == 1 ]]; then
+    dpkg-query -Wf '${Installed-Size}\t${Package}\n' "$@" | cut -f1
+  else
+    dpkg-query -Wf '${Installed-Size}\t${Package}\n' "$@"
+  fi
+}
+
+if [ -t 0 ]; then
+  main "$@"
+else
+  cat - | while read package
+  do
+    main "$package"
+  done
+fi
