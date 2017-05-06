@@ -1,4 +1,15 @@
 #!/bin/bash
 
-directory_name=`echo "$1" | sed -e 's/[^A-Za-z0-9._-]/_/g'`
-wget --recursive --no-parent --execute="robots=off" --directory-prefix="$directory_name" "$1"
+main() {
+  directory_name=`echo "$1" | sed -e 's/[^A-Za-z0-9._-]/_/g'`
+  wget --recursive --no-parent --execute="robots=off" --directory-prefix="$directory_name" "$1"
+}
+
+if [ -t 0 ]; then
+  main "$@"
+else
+  cat - | while read url
+  do
+    main "$url"
+  done
+fi
