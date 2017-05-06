@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo_period() {
+  days=`echo "$1 / (24 * 60 * 60)" | bc`
+  echo "${days}d `date -d@"$1" -u '+%Hh %Mmin %Ss'`"
+}
+
+if [ -t 0 ]; then
+  echo_period "$@"
+else
+  cat - | while read secs
+  do
+    echo_period "$secs"
+  done
+fi
+
+
