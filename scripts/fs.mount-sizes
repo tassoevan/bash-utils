@@ -1,7 +1,11 @@
 #!/bin/bash
 
 main() {
-  df "$1" --human-readable --print-type --exclude-type=tmpfs --exclude-type=devtmpfs
+  if [ $# == 0 ]; then
+    df --human-readable --print-type --exclude-type=tmpfs --exclude-type=devtmpfs
+  else
+    df "$1" --human-readable --print-type --exclude-type=tmpfs --exclude-type=devtmpfs
+  fi
 }
 
 if [ -t 0 ]; then
