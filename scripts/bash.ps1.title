@@ -1,0 +1,38 @@
+#!/bin/bash
+
+get_terminal_prompt() {
+  local prompt_slice="${PS1##*\\007\\]}"
+
+  echo "$prompt_slice"
+}
+
+get_terminal_title() {
+  local title_slice="${PS1%\\007\\]*}"
+
+  if [ "$title_slice" == "$PS1" ]; then
+    echo ''
+  else
+    echo "${title_slice:9}"
+  fi
+}
+
+set_terminal_title() {
+  if [ "$@" == '×' ] || [ "$@" == 'x' ]; then
+    echo "\\[\\033]0;\\007\\]$(get_terminal_prompt)"
+  else
+    echo "\\[\\033]0;${@}\\007\\]$(get_terminal_prompt)"
+  fi
+}
+
+if [ $# == 0 ]; then
+  exit 1
+else
+  PS1="$1"
+  shift
+fi
+
+if [ $# == 0 ]; then
+  get_terminal_title
+else
+  set_terminal_title "$@"
+fi
